@@ -10,8 +10,8 @@
 <body>
 
     <div id='app'>
-        <h1>Hello vue!</h1>
-        {{ msg }}
+        <h1 :style="myStyle">Hello vue!</h1>
+        {{ fullMessage }}
         <br/>
         <a v-if="authorized" v-bind:href="link">Vue</a>
         <br/>
@@ -27,30 +27,75 @@
                 {{ book.title }} &nbsp; {{ book.year }}
             </li>
         </ul>
-        <button v-on:click="addUp">Click me!</button>
+        <button @click="addUp">Click me!</button>
+        <br/>
+        <input type="number" name="grade" v-model="gradeNum" @change="gradeMark">&nbsp;<p>{{ grade }}</p>
+        <br/>
+        <input type="checkbox" name="" id="cbAgree" v-model="agreement">
+        <label for="cbAgree">{{ agreement }}</label>
+        <br/>
+        <input type="radio" name="radio1" id="radioOpt" v-model="radioOption" value="One">
+        <label for="radio1">One</label>
+        <input type="radio" name="radio2" id="radioOpt" v-model="radioOption" value="Two">
+        <label for="radio2">Two</label>
+        <input type="radio" name="radio3" id="radioOpt" v-model="radioOption" value="Three">
+        <label for="radio3">Three</label>
+        <br/>
+        <p>{{ radioOption }}</p>
     </div>
 
     <script>
         const app = new Vue({
             el : '#app',
             data : {
-                msg : "Hello from data!",
+                msg : "Hello ",
+                name: "Umar",
                 link : "http://www.vuejs.org",
                 authorized : true,
                 number: 0,
+                grade : 'E',
+                gradeNum : 0,
+                agreement : false,
+                radioOption : "One",
                 books : [
                     {id: 0, title: "Don Quixote", year: 1605}, 
                     {id: 1, title: "A Tale of Two Cities", year: 1859}, 
                     {id: 2, title: "The Lord of The Rings", year: 1954}
-                    ]
+                    ],
+                myStyle : {
+                    fontSize: '48px',
+                    color: 'blue'
+                }
             },
             methods: {
-                addUp: function() {
+                addUp : function() {
                     if (this.number>=0 && this.number<10) {
                         this.number += 1;
                     } else {
                         this.number = 0;
                     }
+                },
+                gradeMark : function() {
+                    val=this.gradeNum;
+                    
+                    if(val>=0 && val<40) {
+                        this.grade = 'E';
+                    } else if (val<60) {
+                        this.grade = 'D';
+                    } else if (val<70) {
+                        this.grade = 'C';
+                    } else if (val<80) {
+                        this.grade = 'B';
+                    } else if (val<=100) {
+                        this.grade = 'A';
+                    } else {
+                        this.grade = 'Invalid';
+                    }
+                },
+            },
+            computed: {
+                fullMessage() {
+                    return this.msg + this.name + "!";
                 }
             }
         });
